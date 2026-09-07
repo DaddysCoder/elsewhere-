@@ -1,0 +1,19 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.svg {
+  width: 64px;
+  height: 64px;
+}
+
+.path {
+  stroke-dasharray: 6 12;
+  animation: traceDraw 1.8s linear infinite;
+}
+
+.dot {
+  animation: dotPulse 2.4s ease-in-out infinite;
+}

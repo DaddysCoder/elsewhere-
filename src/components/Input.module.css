@@ -1,0 +1,27 @@
+.input {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--ink);
+  padding: 12px 16px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--muted-1);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(155, 123, 216, 0.08);
+}
+
+.surface {
+  background: var(--surface);
+  border: 1px solid var(--border-surface);
+}
+
+.onVideo {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}

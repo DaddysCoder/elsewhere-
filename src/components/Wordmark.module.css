@@ -1,0 +1,36 @@
+.link {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.wordmark {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  font-family: var(--font-mono);
+  letter-spacing: -0.01em;
+}
+
+.else {
+  color: var(--ink);
+}
+
+.brace {
+  color: var(--muted-1);
+}
+
+.where {
+  color: var(--accent);
+}
+
+.wordmark[data-variant="onVideo"] .else {
+  color: #ffffff;
+}
+
+.wordmark[data-variant="onVideo"] .brace {
+  color: #d8d2e6;
+}
+
+.wordmark[data-variant="onVideo"] .where {
+  color: var(--accent-light);
+}
