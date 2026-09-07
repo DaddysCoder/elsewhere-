@@ -1,34 +1,9 @@
+import { Link } from "react-router-dom";
 import { SubpageHeader } from "../components/SubpageHeader";
 import { TexturePlate } from "../components/TexturePlate";
+import { papers } from "../data/research";
 import styles from "./Research.module.css";
 import minimalDune from "../assets/stills/02_minimal_close_dune.png";
-
-const papers = [
-  {
-    category: "routing",
-    year: "2026",
-    title: "Shortest-Path Routing Under Structural Drift",
-    dek: "A routing model that tracks its own confidence as the graph it operates on continues to change.",
-  },
-  {
-    category: "representation",
-    year: "2025",
-    title: "Boundary Instability in Learned Object Categories",
-    dek: "Measuring how category boundaries shift under distribution change across five vision benchmarks.",
-  },
-  {
-    category: "compression",
-    year: "2025",
-    title: "Minimal Descriptions of Self-Referential Systems",
-    dek: "A working paper on compression bounds for systems that model themselves.",
-  },
-  {
-    category: "observation",
-    year: "2024",
-    title: "External Observer Assumptions in Coupled Systems",
-    dek: 'A survey of where "external observer" models quietly break down in practice.',
-  },
-];
 
 export function Research() {
   return (
@@ -50,8 +25,9 @@ export function Research() {
 
       <div className={styles.list}>
         {papers.map((paper, i) => (
-          <article
-            key={paper.title}
+          <Link
+            key={paper.slug}
+            to={`/research/${paper.slug}`}
             className={`fade-up ${styles.paper}`}
             style={{ animationDelay: `${0.05 + i * 0.07}s` }}
           >
@@ -64,8 +40,9 @@ export function Research() {
                 <h3 className={styles.title}>{paper.title}</h3>
                 <p className={styles.dek}>{paper.dek}</p>
               </div>
+              <span className={styles.formats}>read</span>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </div>

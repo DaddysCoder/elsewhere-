@@ -64,8 +64,21 @@
 
 .paper {
   display: block;
+  text-decoration: none;
   border-top: 1px solid var(--border-ground);
   padding: 24px 0;
+  transition: background 0.25s ease, padding-left 0.25s ease;
+}
+
+.paper:hover,
+.paper:focus-visible {
+  background: rgba(155, 123, 216, 0.045);
+  padding-left: 10px;
+}
+
+.paper:hover h3,
+.paper:focus-visible h3 {
+  color: var(--accent-light);
 }
 
 .list > .paper:last-child {
@@ -106,6 +119,7 @@
   font-size: 21px;
   font-weight: 600;
   color: var(--ink);
+  transition: color 0.25s ease;
 }
 
 .dek {
@@ -117,6 +131,13 @@
 
 .year {
   color: var(--muted-1);
+}
+
+.formats {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-1);
+  white-space: nowrap;
 }
 
 @media (max-width: 520px) {

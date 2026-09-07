@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Wordmark } from "./Wordmark";
+import { useAuth } from "../lib/auth";
 import styles from "./SubpageHeader.module.css";
 
 const SECTION_LINKS = [
@@ -17,6 +18,8 @@ interface SubpageHeaderProps {
 }
 
 export function SubpageHeader({ active, maxWidth = 900 }: SubpageHeaderProps) {
+  const { user, logout } = useAuth();
+
   return (
     <div className={styles.row} style={{ maxWidth }}>
       <Wordmark size={16} />
@@ -31,6 +34,21 @@ export function SubpageHeader({ active, maxWidth = 900 }: SubpageHeaderProps) {
             {link.label}
           </Link>
         ))}
+        {user ? (
+          <button
+            type="button"
+            className={styles.avatar}
+            onClick={() => void logout()}
+            title={`Signed in as ${user.displayName}. Click to sign out.`}
+            aria-label={`Signed in as ${user.displayName}. Sign out`}
+          >
+            {user.initials}
+          </button>
+        ) : (
+          <Link to="/login" className={styles.link}>
+            sign in
+          </Link>
+        )}
       </nav>
     </div>
   );

@@ -5,7 +5,7 @@ import { TexturePlate } from "../components/TexturePlate";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { essays } from "../data/essays";
-import { postNotification } from "../lib/notify";
+import { api } from "../lib/api";
 import styles from "./Essays.module.css";
 import textureDune from "../assets/stills/05_texture_detail_dune.png";
 
@@ -91,7 +91,10 @@ export function Essays() {
               e.preventDefault();
               setStatus("submitting");
               try {
-                await postNotification("/api/subscribe", { email });
+                await api("/api/subscribe", {
+                  method: "POST",
+                  body: JSON.stringify({ email }),
+                });
                 setStatus("success");
                 setEmail("");
               } catch {
@@ -116,7 +119,7 @@ export function Essays() {
           </form>
           {status === "success" && (
             <p className={styles.formNote} role="status" aria-live="polite">
-              Got it — thanks.
+              You're on the list.
             </p>
           )}
           {status === "error" && (
