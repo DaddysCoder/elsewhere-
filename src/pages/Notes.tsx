@@ -32,14 +32,7 @@ export function Notes() {
       <div className={styles.headerWrap}>
         <TexturePlate height={420} opacity={0.5} image={wideDunes} />
         <div className={styles.headerContent}>
-          <SubpageHeader
-            maxWidth={760}
-            links={[
-              { label: "essays", to: "/essays" },
-              { label: "notes", to: "/notes", active: true },
-              { label: "research", to: "/research" },
-            ]}
-          />
+          <SubpageHeader maxWidth={760} active="/notes" />
           <div className={styles.intro}>
             <p className={styles.kicker}>// notes</p>
             <h1 className={styles.headline}>Small things, as they happen.</h1>

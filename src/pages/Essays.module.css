@@ -25,7 +25,7 @@
 .intro {
   width: 100%;
   max-width: 900px;
-  padding: 64px 24px 0;
+  padding: 40px 24px 0;
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -229,6 +229,7 @@
 .signupRow {
   display: flex;
   gap: 10px;
+  align-items: flex-end;
   max-width: 420px;
 }
 

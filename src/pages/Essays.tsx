@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Wordmark } from "../components/Wordmark";
+import { SubpageHeader } from "../components/SubpageHeader";
 import { TexturePlate } from "../components/TexturePlate";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { essays } from "../data/essays";
+import { postNotification } from "../lib/notify";
 import styles from "./Essays.module.css";
 import textureDune from "../assets/stills/05_texture_detail_dune.png";
 
@@ -21,8 +22,8 @@ export function Essays() {
       <div className={styles.headerWrap}>
         <TexturePlate height={520} opacity={0.16} image={textureDune} />
         <div className={styles.headerContent}>
+          <SubpageHeader active="/essays" />
           <div className={styles.intro}>
-            <Wordmark />
             <h1 className={styles.headline}>The part where we're allowed to wander.</h1>
             <div className={styles.copy}>
               <p className={styles.authorTag}>// from the author</p>
@@ -90,12 +91,7 @@ export function Essays() {
               e.preventDefault();
               setStatus("submitting");
               try {
-                const res = await fetch("/api/subscribe", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ email }),
-                });
-                if (!res.ok) throw new Error("request failed");
+                await postNotification("/api/subscribe", { email });
                 setStatus("success");
                 setEmail("");
               } catch {
@@ -105,7 +101,9 @@ export function Essays() {
           >
             <Input
               type="email"
+              label="Email"
               placeholder="you@email.com"
+              autoComplete="email"
               className={styles.signupInput}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -117,10 +115,14 @@ export function Essays() {
             </Button>
           </form>
           {status === "success" && (
-            <p className={styles.formNote}>You're on the list.</p>
+            <p className={styles.formNote} role="status" aria-live="polite">
+              Got it — thanks.
+            </p>
           )}
           {status === "error" && (
-            <p className={styles.formNote}>Something went wrong — try again shortly.</p>
+            <p className={styles.formNote} role="status" aria-live="polite">
+              Something went wrong — try again shortly.
+            </p>
           )}
           <Link to="/" className={styles.footerBack}>
             ← Elsewhere home

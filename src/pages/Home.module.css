@@ -63,12 +63,21 @@
 }
 
 .kicker {
-  margin: 0 0 40px;
+  margin: 0 0 12px;
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
+}
+
+.purpose {
+  margin: 0 0 36px;
+  max-width: 420px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--body-1);
 }
 
 .nav {
@@ -91,13 +100,15 @@
   transition: color 0.25s ease, padding-left 0.25s ease, border-color 0.25s ease;
 }
 
-.navItem:hover {
+.navItem:hover,
+.navItem:focus-visible {
   color: var(--ink);
   padding-left: 14px;
   border-color: var(--accent);
 }
 
-.navItem:hover .navCoord {
+.navItem:hover .navCoord,
+.navItem:focus-visible .navCoord {
   color: var(--accent);
 }
 

@@ -19,10 +19,16 @@
   color: var(--ground);
 }
 
-.primary:hover {
+.primary:hover,
+.primary:focus-visible {
   transform: translateY(-1px);
   box-shadow: 0 8px 20px rgba(155, 123, 216, 0.35);
   background: var(--accent-hover);
+}
+
+.primary:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 3px;
 }
 
 .ghost {
@@ -31,7 +37,13 @@
   color: var(--ink);
 }
 
-.ghost:hover {
+.ghost:hover,
+.ghost:focus-visible {
   background: rgba(255, 255, 255, 0.09);
   border-color: rgba(255, 255, 255, 0.24);
+}
+
+.ghost:focus-visible {
+  outline: 2px solid var(--accent-light);
+  outline-offset: 3px;
 }

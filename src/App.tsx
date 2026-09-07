@@ -5,7 +5,6 @@ import { EssayDetail } from "./pages/EssayDetail";
 import { Notes } from "./pages/Notes";
 import { Research } from "./pages/Research";
 import { Community } from "./pages/Community";
-import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
       <Route path="/notes" element={<Notes />} />
       <Route path="/research" element={<Research />} />
       <Route path="/community" element={<Community />} />
-      <Route path="/login" element={<Login />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

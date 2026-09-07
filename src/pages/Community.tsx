@@ -3,17 +3,17 @@ import { SubpageHeader } from "../components/SubpageHeader";
 import { TexturePlate } from "../components/TexturePlate";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { postNotification } from "../lib/notify";
 import styles from "./Community.module.css";
 import oasisSide from "../assets/stills/03_oasis_side_view.png";
 
-const threads = [
+const excerpts = [
   {
     initials: "rn",
     author: "r.nakamura",
     meta: "2 days ago · on ontology",
     title: 'If objects are just useful patterns, is "useful" doing all the work?',
     dek: "Re: essay 01 — feels like the definition just relocates the hard question rather than answering it.",
-    replies: "14 replies",
   },
   {
     initials: "kt",
@@ -21,7 +21,6 @@ const threads = [
     meta: "4 days ago",
     title: "Looking for the paper on shortest-path routing under drift",
     dek: "Someone mentioned it in a call, can't find it on the publications page.",
-    replies: "3 replies",
   },
   {
     initials: "ae",
@@ -29,7 +28,6 @@ const threads = [
     meta: "1 week ago",
     title: "A half-finished thought about zero and unresolved state",
     dek: "Not sure this goes anywhere but writing it down before I lose it.",
-    replies: "7 replies",
   },
 ];
 
@@ -44,15 +42,7 @@ export function Community() {
       <div className={styles.headerWrap}>
         <TexturePlate height={460} opacity={0.55} image={oasisSide} />
         <div className={styles.headerContent}>
-          <SubpageHeader
-            maxWidth={900}
-            avatarInitials="jm"
-            links={[
-              { label: "essays", to: "/essays" },
-              { label: "research", to: "/research" },
-              { label: "discuss", to: "/community", active: true },
-            ]}
-          />
+          <SubpageHeader maxWidth={900} active="/community" />
           <div className={styles.intro}>
             <p className={styles.kicker}>// discuss</p>
             <h1 className={styles.headline}>Threads, not feeds.</h1>
@@ -68,12 +58,7 @@ export function Community() {
               e.preventDefault();
               setStatus("submitting");
               try {
-                const res = await fetch("/api/thread", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ message: draft }),
-                });
-                if (!res.ok) throw new Error("request failed");
+                await postNotification("/api/thread", { message: draft });
                 setStatus("success");
                 setDraft("");
               } catch {
@@ -83,7 +68,8 @@ export function Community() {
           >
             <Input
               type="text"
-              placeholder="start a thread..."
+              label="Discussion prompt"
+              placeholder="a question or a half-formed idea..."
               className={styles.composerInput}
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
@@ -91,40 +77,46 @@ export function Community() {
               required
             />
             <Button type="submit" disabled={status === "submitting"}>
-              {status === "submitting" ? "Sending…" : "Post"}
+              {status === "submitting" ? "Sending…" : "Send to Elsewhere"}
             </Button>
           </form>
+          <p className={styles.destination}>
+            This goes privately to the lab — it is not published as a thread.
+          </p>
           {status === "success" && (
-            <p className={styles.formNote}>Sent — the lab reads every thread.</p>
+            <p className={styles.formNote} role="status" aria-live="polite">
+              Sent — the lab reads every thread.
+            </p>
           )}
           {status === "error" && (
-            <p className={styles.formNote}>Something went wrong — try again shortly.</p>
+            <p className={styles.formNote} role="status" aria-live="polite">
+              Something went wrong — try again shortly.
+            </p>
           )}
         </div>
       </div>
 
       <div className={styles.list}>
-        {threads.map((thread, i) => (
-          <a
-            key={thread.title}
-            href="#"
+        {excerpts.map((excerpt, i) => (
+          <article
+            key={excerpt.title}
             className={`fade-up ${styles.thread}`}
             style={{ animationDelay: `${0.05 + i * 0.07}s` }}
-            onClick={(e) => e.preventDefault()}
           >
             <div className={styles.threadRow}>
-              <div className={styles.avatar}>{thread.initials}</div>
+              <div className={styles.avatar} aria-hidden="true">
+                {excerpt.initials}
+              </div>
               <div className={styles.threadBody}>
                 <div className={styles.threadMeta}>
-                  <span className={styles.author}>{thread.author}</span>
-                  <span>· {thread.meta}</span>
+                  <span className={styles.author}>{excerpt.author}</span>
+                  <span>· {excerpt.meta}</span>
                 </div>
-                <h3 className={styles.threadTitle}>{thread.title}</h3>
-                <p className={styles.threadDek}>{thread.dek}</p>
-                <span className={styles.replies}>{thread.replies}</span>
+                <h3 className={styles.threadTitle}>{excerpt.title}</h3>
+                <p className={styles.threadDek}>{excerpt.dek}</p>
               </div>
             </div>
-          </a>
+          </article>
         ))}
       </div>
     </div>

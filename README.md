@@ -12,8 +12,10 @@ this repo).
 - Plain CSS with CSS custom properties for design tokens (`src/styles/tokens.css`)
   plus CSS Modules per component/page — no CSS-in-JS, no Tailwind
 - Google Fonts: Public Sans (display/body) and JetBrains Mono (UI/labels/wordmark)
-- Two Vercel serverless functions in `api/` for the newsletter and community
-  forms (see "Forms & email notifications" below)
+- Cloudflare Worker (`worker/`) for the newsletter and community forms, plus
+  static assets for the SPA
+
+Production: [elsewhere.polina-67d.workers.dev](https://elsewhere.polina-67d.workers.dev)
 
 ## Pages
 
@@ -25,22 +27,38 @@ this repo).
 | `/notes`            | Notes feed     |
 | `/research`         | Research index |
 | `/community`        | Community      |
-| `/login`            | Login (UI only — no auth backend, see below) |
+
+Unknown paths render the branded 404. `/login` is not a public route.
 
 ## Running locally
 
 ```bash
 npm install
-npm run dev      # start the dev server
+npm run dev      # front-end only (forms need the Worker)
 npm run build    # type-check and produce a production build in dist/
 npm run lint     # oxlint
-npm run preview  # preview the production build locally
+npm run preview  # preview the static build locally
 ```
 
-`npm run dev` only serves the front-end — it does not run the `api/`
-functions. To test the forms locally, install the Vercel CLI and run
-`vercel dev` instead (it serves both the Vite app and `api/` together and
-reads `.env`/`.env.local` for `RESEND_API_KEY`).
+`npm run dev` only serves the front-end. To exercise `/api/subscribe` and
+`/api/thread` locally:
+
+1. Copy `.env.example` to `.dev.vars` and set `RESEND_API_KEY`.
+2. `npm run build && npx wrangler dev` — serves the SPA and the Worker together.
+
+## Deploy
+
+```bash
+npx wrangler secret put RESEND_API_KEY
+npm run deploy
+```
+
+Optional notify overrides can be set as Worker vars or secrets:
+`NOTIFY_TO_EMAIL`, `NOTIFY_FROM_EMAIL`.
+
+The Worker name is `elsewhere` (workers.dev: `elsewhere.<account>.workers.dev`).
+`assets.not_found_handling` is `single-page-application`, so deep links such as
+`/essays/:slug` resolve on refresh. `/api/*` is handled by the Worker first.
 
 ## Assets
 
@@ -54,31 +72,20 @@ site's real copy; kept in the repo for a future editorial placement.
 
 ## Forms & email notifications
 
-Two forms — the newsletter signup on `/essays` and the "start a thread" box
-on `/community` — POST to `api/subscribe` and `api/thread` respectively.
+Two forms — the newsletter signup on `/essays` and the discussion prompt on
+`/community` — POST to `/api/subscribe` and `/api/thread` respectively.
 Neither form stores anything; each submission sends a one-off email via
 [Resend](https://resend.com) to `hello@primitiveai.com.au` (overridable, see
-below) and returns success/error, no database involved.
+below) and returns `{ ok: true }` or an error. No mailing list or public
+thread is created.
 
-**Login is not one of these forms.** It has no backend at all — the
-email/password/GitHub button don't authenticate anyone. Wiring up real auth
-(and deciding whether it should exist at all) is separate follow-up work.
-
-To make the two forms actually send mail once deployed:
+To make the two forms actually send mail:
 
 1. Create a [Resend](https://resend.com) account and API key.
 2. Verify a sending domain in Resend (needed to send `from` your own domain
    instead of the shared `onboarding@resend.dev` test address, which works
    but looks like a test sender).
-3. Set `RESEND_API_KEY` (required) in your hosting provider's environment
-   variables. Optionally set `NOTIFY_TO_EMAIL` (defaults to
-   `hello@primitiveai.com.au`) and `NOTIFY_FROM_EMAIL` (defaults to
-   `onboarding@resend.dev` — set this to an address on your verified domain
-   once you have one). See `.env.example`.
-
-The two functions in `api/` are plain Vercel serverless functions (Node,
-`export default function handler(req, res)`), the simplest pairing for a
-static Vite site. If this ends up hosted somewhere other than Vercel
-(Netlify, Cloudflare, etc.), these will need to move into that platform's
-own function format — the Resend-calling logic in `api/_resend.js` can be
-reused as-is, it's just a `fetch` call.
+3. Set `RESEND_API_KEY` (required) as a Wrangler secret. Optionally set
+   `NOTIFY_TO_EMAIL` (defaults to `hello@primitiveai.com.au`) and
+   `NOTIFY_FROM_EMAIL` (defaults to `onboarding@resend.dev` — set this to an
+   address on your verified domain once you have one). See `.env.example`.
