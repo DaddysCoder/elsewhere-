@@ -8,8 +8,11 @@ import { essays } from "../data/essays";
 import styles from "./Essays.module.css";
 import textureDune from "../assets/stills/05_texture_detail_dune.png";
 
+type FormStatus = "idle" | "submitting" | "success" | "error";
+
 export function Essays() {
   const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<FormStatus>("idle");
   const coverStory = essays.find((e) => e.isCoverStory)!;
   const rest = essays.filter((e) => !e.isCoverStory);
 
@@ -83,7 +86,22 @@ export function Essays() {
           </p>
           <form
             className={styles.signupRow}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setStatus("submitting");
+              try {
+                const res = await fetch("/api/subscribe", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ email }),
+                });
+                if (!res.ok) throw new Error("request failed");
+                setStatus("success");
+                setEmail("");
+              } catch {
+                setStatus("error");
+              }
+            }}
           >
             <Input
               type="email"
@@ -91,9 +109,19 @@ export function Essays() {
               className={styles.signupInput}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={status === "submitting"}
+              required
             />
-            <Button type="submit">Subscribe</Button>
+            <Button type="submit" disabled={status === "submitting"}>
+              {status === "submitting" ? "Sending…" : "Subscribe"}
+            </Button>
           </form>
+          {status === "success" && (
+            <p className={styles.formNote}>You're on the list.</p>
+          )}
+          {status === "error" && (
+            <p className={styles.formNote}>Something went wrong — try again shortly.</p>
+          )}
           <Link to="/" className={styles.footerBack}>
             ← Elsewhere home
           </Link>

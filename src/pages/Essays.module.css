@@ -237,6 +237,13 @@
   min-width: 0;
 }
 
+.formNote {
+  margin: -8px 0 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-light);
+}
+
 .footerBack {
   margin-top: 4px;
   font-family: var(--font-mono);

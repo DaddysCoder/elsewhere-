@@ -33,8 +33,11 @@ const threads = [
   },
 ];
 
+type FormStatus = "idle" | "submitting" | "success" | "error";
+
 export function Community() {
   const [draft, setDraft] = useState("");
+  const [status, setStatus] = useState<FormStatus>("idle");
 
   return (
     <div className={styles.page}>
@@ -61,7 +64,22 @@ export function Community() {
           </div>
           <form
             className={styles.composer}
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setStatus("submitting");
+              try {
+                const res = await fetch("/api/thread", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ message: draft }),
+                });
+                if (!res.ok) throw new Error("request failed");
+                setStatus("success");
+                setDraft("");
+              } catch {
+                setStatus("error");
+              }
+            }}
           >
             <Input
               type="text"
@@ -69,9 +87,19 @@ export function Community() {
               className={styles.composerInput}
               value={draft}
               onChange={(e) => setDraft(e.target.value)}
+              disabled={status === "submitting"}
+              required
             />
-            <Button type="submit">Post</Button>
+            <Button type="submit" disabled={status === "submitting"}>
+              {status === "submitting" ? "Sending…" : "Post"}
+            </Button>
           </form>
+          {status === "success" && (
+            <p className={styles.formNote}>Sent — the lab reads every thread.</p>
+          )}
+          {status === "error" && (
+            <p className={styles.formNote}>Something went wrong — try again shortly.</p>
+          )}
         </div>
       </div>
 
