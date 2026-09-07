@@ -1,6 +1,7 @@
 import { SubpageHeader } from "../components/SubpageHeader";
 import { TexturePlate } from "../components/TexturePlate";
 import styles from "./Notes.module.css";
+import wideDunes from "../assets/stills/04_wide_plain_dunes.png";
 
 const notes = [
   {
@@ -29,7 +30,7 @@ export function Notes() {
   return (
     <div className={styles.page}>
       <div className={styles.headerWrap}>
-        <TexturePlate height={420} opacity={0.5} />
+        <TexturePlate height={420} opacity={0.5} image={wideDunes} />
         <div className={styles.headerContent}>
           <SubpageHeader
             maxWidth={760}

@@ -3,20 +3,19 @@ import styles from "./TexturePlate.module.css";
 interface TexturePlateProps {
   height: number;
   opacity?: number;
+  /** Duotone-graded desert still to show behind the page header. */
+  image: string;
 }
 
 /**
- * Stand-in for the duotone field-plate photography referenced in the handoff
- * (src/assets/dune-texture.png, field-plate-01.png, terrain-model-03.png,
- * signal-path-02.png). Drop the real asset in as an <img> with the same
- * mask-image/opacity treatment once production photography is available.
+ * Duotone field-plate photography treatment used behind page headers — a
+ * masked, faded still that fades to transparent toward the bottom of the
+ * header so it never competes with the real copy stacked on top of it.
  */
-export function TexturePlate({ height, opacity = 0.5 }: TexturePlateProps) {
+export function TexturePlate({ height, opacity = 0.5, image }: TexturePlateProps) {
   return (
-    <div
-      className={styles.plate}
-      style={{ height, opacity }}
-      aria-hidden="true"
-    />
+    <div className={styles.plate} style={{ height, opacity }} aria-hidden="true">
+      <img className={styles.image} src={image} alt="" />
+    </div>
   );
 }

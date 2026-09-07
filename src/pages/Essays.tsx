@@ -6,6 +6,7 @@ import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import { essays } from "../data/essays";
 import styles from "./Essays.module.css";
+import textureDune from "../assets/stills/05_texture_detail_dune.png";
 
 export function Essays() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,7 @@ export function Essays() {
   return (
     <div className={styles.page}>
       <div className={styles.headerWrap}>
-        <TexturePlate height={520} opacity={0.16} />
+        <TexturePlate height={520} opacity={0.16} image={textureDune} />
         <div className={styles.headerContent}>
           <div className={styles.intro}>
             <Wordmark />

@@ -3,6 +3,7 @@ import { Wordmark } from "../components/Wordmark";
 import { TracePath } from "../components/TracePath";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
+import { HeroVideo } from "../components/HeroVideo";
 import styles from "./Login.module.css";
 
 export function Login() {
@@ -11,8 +12,7 @@ export function Login() {
 
   return (
     <div className={styles.page}>
-      {/* drop production file at public/uploads/Untitled video.mp4 */}
-      <video className={styles.video} autoPlay muted loop playsInline />
+      <HeroVideo className={styles.video} />
       <div className={styles.colorOverlay} />
       <div className={styles.vignette} />
       <div className={styles.scrim} />

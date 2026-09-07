@@ -1,6 +1,7 @@
 import { SubpageHeader } from "../components/SubpageHeader";
 import { TexturePlate } from "../components/TexturePlate";
 import styles from "./Research.module.css";
+import minimalDune from "../assets/stills/02_minimal_close_dune.png";
 
 const papers = [
   {
@@ -37,7 +38,7 @@ export function Research() {
   return (
     <div className={styles.page}>
       <div className={styles.headerWrap}>
-        <TexturePlate height={380} opacity={0.6} />
+        <TexturePlate height={380} opacity={0.6} image={minimalDune} />
         <div className={styles.headerContent}>
           <SubpageHeader
             maxWidth={900}

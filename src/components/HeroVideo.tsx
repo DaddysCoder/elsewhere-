@@ -1,19 +1,24 @@
 import styles from "./HeroVideo.module.css";
+import heroPoster from "../assets/stills/01_aerial_oasis_plain.png";
+
+interface HeroVideoProps {
+  className?: string;
+}
 
 /**
- * Drop the production file at public/uploads/Untitled video.mp4 and set
- * `src` below to enable it — the filter/overlay treatment is already wired
- * up per the brand book's duotone hero-imagery spec.
+ * Duotone hero background video — the poster still (a night-desert aerial)
+ * shows before the video loads, or if playback fails.
  */
-export function HeroVideo() {
+export function HeroVideo({ className }: HeroVideoProps) {
   return (
     <video
-      className={styles.video}
+      className={className ?? styles.video}
       autoPlay
       muted
       loop
       playsInline
-      // src="/uploads/Untitled video.mp4"
+      poster={heroPoster}
+      src="/uploads/Untitled video.mp4"
     />
   );
 }

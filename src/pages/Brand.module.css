@@ -115,6 +115,29 @@
   justify-content: center;
 }
 
+.fieldPlateGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.fieldPlateCard {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-surface);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fieldPlateImg {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
 .backLink {
   font-family: var(--font-mono);
   font-size: 13px;

@@ -4,6 +4,7 @@ import { TexturePlate } from "../components/TexturePlate";
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 import styles from "./Community.module.css";
+import oasisSide from "../assets/stills/03_oasis_side_view.png";
 
 const threads = [
   {
@@ -38,7 +39,7 @@ export function Community() {
   return (
     <div className={styles.page}>
       <div className={styles.headerWrap}>
-        <TexturePlate height={460} opacity={0.55} />
+        <TexturePlate height={460} opacity={0.55} image={oasisSide} />
         <div className={styles.headerContent}>
           <SubpageHeader
             maxWidth={900}
