@@ -31,6 +31,9 @@ export function Home() {
           <p className={`fade-up ${styles.kicker}`} style={{ animationDelay: "0.1s" }}>
             // research lab
           </p>
+          <p className={`fade-up ${styles.purpose}`} style={{ animationDelay: "0.12s" }}>
+            Independent essays, experiments and research from the Primitive lab.
+          </p>
           <nav className={styles.nav}>
             {navItems.map((item) => (
               <Link

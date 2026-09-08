@@ -13,3 +13,10 @@
 .traceDot {
   animation: dotPulse 2.4s ease-in-out infinite;
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .tracePath,
+  .traceDot {
+    animation: none;
+  }
+}

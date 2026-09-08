@@ -1,35 +1,55 @@
 import { Link } from "react-router-dom";
 import { Wordmark } from "./Wordmark";
+import { useAuth } from "../lib/auth";
 import styles from "./SubpageHeader.module.css";
 
-interface NavItem {
-  label: string;
-  to: string;
-  active?: boolean;
-}
+const SECTION_LINKS = [
+  { label: "essays", to: "/essays" },
+  { label: "notes", to: "/notes" },
+  { label: "research", to: "/research" },
+  { label: "community", to: "/community" },
+] as const;
+
+type SectionPath = (typeof SECTION_LINKS)[number]["to"];
 
 interface SubpageHeaderProps {
-  links: NavItem[];
-  avatarInitials?: string;
+  active: SectionPath;
   maxWidth?: number;
 }
 
-export function SubpageHeader({ links, avatarInitials, maxWidth = 900 }: SubpageHeaderProps) {
+export function SubpageHeader({ active, maxWidth = 900 }: SubpageHeaderProps) {
+  const { user, logout } = useAuth();
+
   return (
     <div className={styles.row} style={{ maxWidth }}>
       <Wordmark size={16} />
-      <div className={styles.nav}>
-        {links.map((link) => (
+      <nav className={styles.nav} aria-label="Sections">
+        {SECTION_LINKS.map((link) => (
           <Link
             key={link.to}
             to={link.to}
-            className={link.active ? styles.active : styles.link}
+            className={link.to === active ? styles.active : styles.link}
+            aria-current={link.to === active ? "page" : undefined}
           >
             {link.label}
           </Link>
         ))}
-        {avatarInitials && <div className={styles.avatar}>{avatarInitials}</div>}
-      </div>
+        {user ? (
+          <button
+            type="button"
+            className={styles.avatar}
+            onClick={() => void logout()}
+            title={`Signed in as ${user.displayName}. Click to sign out.`}
+            aria-label={`Signed in as ${user.displayName}. Sign out`}
+          >
+            {user.initials}
+          </button>
+        ) : (
+          <Link to="/login" className={styles.link}>
+            sign in
+          </Link>
+        )}
+      </nav>
     </div>
   );
 }

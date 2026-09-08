@@ -12,7 +12,7 @@
 
   --comment-green: #6b9e78;
 
-  --muted-1: #5b6270;
+  --muted-1: #7a8190;
   --muted-2: #6b7280;
   --muted-3: #7b8291;
 
@@ -51,6 +51,15 @@ a {
 
 a:hover {
   color: var(--accent-hover);
+}
+
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 button,
@@ -106,4 +115,41 @@ input {
 .fade-up {
   opacity: 0;
   animation: fadeUp 0.7s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    opacity: 1;
+    animation: none;
+  }
+
+  @keyframes fadeUp {
+    from,
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes traceDraw {
+    from,
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes dotPulse {
+    from,
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes cardIn {
+    from,
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
