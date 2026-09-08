@@ -2,9 +2,9 @@ const NOTIFY_TO = process.env.NOTIFY_TO_EMAIL || "hello@primitiveai.com.au";
 const NOTIFY_FROM = process.env.NOTIFY_FROM_EMAIL || "onboarding@resend.dev";
 
 export async function sendNotification({ subject, text }) {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.RESEND_API_KEY_ELSEWHERE;
   if (!apiKey) {
-    throw new Error("RESEND_API_KEY is not set");
+    throw new Error("RESEND_API_KEY_ELSEWHERE is not set");
   }
 
   const res = await fetch("https://api.resend.com/emails", {

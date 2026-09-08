@@ -40,7 +40,7 @@ npm run preview  # preview the production build locally
 `npm run dev` only serves the front-end — it does not run the `api/`
 functions. To test the forms locally, install the Vercel CLI and run
 `vercel dev` instead (it serves both the Vite app and `api/` together and
-reads `.env`/`.env.local` for `RESEND_API_KEY`).
+reads `.env`/`.env.local` for `RESEND_API_KEY_ELSEWHERE`).
 
 ## Assets
 
@@ -70,7 +70,7 @@ To make the two forms actually send mail once deployed:
 2. Verify a sending domain in Resend (needed to send `from` your own domain
    instead of the shared `onboarding@resend.dev` test address, which works
    but looks like a test sender).
-3. Set `RESEND_API_KEY` (required) in your hosting provider's environment
+3. Set `RESEND_API_KEY_ELSEWHERE` (required) in your hosting provider's environment
    variables. Optionally set `NOTIFY_TO_EMAIL` (defaults to
    `hello@primitiveai.com.au`) and `NOTIFY_FROM_EMAIL` (defaults to
    `onboarding@resend.dev` — set this to an address on your verified domain
